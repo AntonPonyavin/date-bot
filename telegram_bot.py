@@ -53,7 +53,7 @@ def handle_date(call):
    
     bot.send_location(call.message.chat.id, latitude=LATITUDE, longitude=LONGITUDE)
    
-   maps_text = (
+maps_text = (
     "🚗 <b>Построить маршрут до места встречи:</b>\n\n"
     f"🔗 <a href='https://www.google.com/maps/dir/?api=1&destination={LATITUDE},{LONGITUDE}'>Google Карты</a>\n"
     f"🔗 <a href='https://yandex.ru/maps/?rtext=\~{LATITUDE},{LONGITUDE}'>Яндекс Карты</a>"
