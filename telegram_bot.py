@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Telegram-бот для свидания (только дата + фиксированное время)
+Telegram-бот для свидания
 """
 
 import telebot
@@ -20,7 +20,7 @@ DATES = {
     "02.08": "2 августа"
 }
 
-FIXED_TIME = "18:00"   # ← Можно поменять время здесь
+FIXED_TIME = "18:00"
 
 @bot.message_handler(commands=['start'])
 def cmd_start(message):
@@ -53,11 +53,11 @@ def handle_date(call):
    
     bot.send_location(call.message.chat.id, latitude=LATITUDE, longitude=LONGITUDE)
    
-maps_text = (
-    "🚗 <b>Построить маршрут до места встречи:</b>\n\n"
-    f"🔗 <a href='https://www.google.com/maps/dir/?api=1&destination={LATITUDE},{LONGITUDE}'>Google Карты</a>\n"
-    f"🔗 <a href='https://yandex.ru/maps/?rtext=\~{LATITUDE},{LONGITUDE}'>Яндекс Карты</a>"
-)
+    maps_text = (
+        "🚗 <b>Построить маршрут до места встречи:</b>\n\n"
+        f"🔗 <a href='https://www.google.com/maps/dir/?api=1&destination={LATITUDE},{LONGITUDE}'>Google Карты</a>\n"
+        f"🔗 <a href='https://yandex.ru/maps/?rtext=\~{LATITUDE},{LONGITUDE}'>Яндекс Карты</a>"
+    )
     bot.send_message(call.message.chat.id, maps_text)
    
     markup = types.InlineKeyboardMarkup(row_width=2)
