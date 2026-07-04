@@ -53,11 +53,11 @@ def handle_date(call):
    
     bot.send_location(call.message.chat.id, latitude=LATITUDE, longitude=LONGITUDE)
    
-    maps_text = (
-        "Место встречи:\n\n"
-        f"Google Карты: https://www.google.com/maps?q={LATITUDE},{LONGITUDE}\n"
-        f"Яндекс Карты: https://yandex.ru/maps/?ll={LONGITUDE},{LATITUDE}&z=17"
-    )
+   maps_text = (
+    "🚗 <b>Построить маршрут до места встречи:</b>\n\n"
+    f"🔗 <a href='https://www.google.com/maps/dir/?api=1&destination={LATITUDE},{LONGITUDE}'>Google Карты</a>\n"
+    f"🔗 <a href='https://yandex.ru/maps/?rtext=\~{LATITUDE},{LONGITUDE}'>Яндекс Карты</a>"
+)
     bot.send_message(call.message.chat.id, maps_text)
    
     markup = types.InlineKeyboardMarkup(row_width=2)
