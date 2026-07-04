@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Telegram-бот для свидания
+Telegram-бот для свидания (с секретным вопросом)
 """
 
 import telebot
@@ -22,14 +22,28 @@ DATES = {
 
 FIXED_TIME = "18:00"
 
+# === СЕКРЕТНЫЙ ВОПРОС ===
+SECRET_QUESTION = "Я отправлял вам видео. Вы помните, кто был на нём? Назовите животное, чтобы мы могли продолжить."
+CORRECT_ANSWERS = ["ежик", "ёжик"]   # можно добавлять другие варианты
+# =========================
+
 @bot.message_handler(commands=['start'])
 def cmd_start(message):
     user_name = message.from_user.first_name or "друг"
+    bot.send_message(message.chat.id, f"Привет, {user_name}!\n\n{SECRET_QUESTION}")
+
+@bot.message_handler(func=lambda m: True)
+def check_secret_answer(message):
+    user_answer = message.text.lower().strip()
    
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    markup.add(types.KeyboardButton("Выбрать дату встречи"))
-   
-    bot.send_message(message.chat.id, f"Привет, {user_name}!\n\nДавай выберем дату нашей встречи.", reply_markup=markup)
+    if user_answer in CORRECT_ANSWERS:
+        # Правильный ответ
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        markup.add(types.KeyboardButton("Выбрать дату встречи"))
+        bot.send_message(message.chat.id, "Верно! Добро пожаловать ❤️", reply_markup=markup)
+    else:
+        # Неправильный ответ
+        bot.send_message(message.chat.id, "Неверный ответ. Попробуй ещё раз.")
 
 @bot.message_handler(func=lambda m: m.text == "Выбрать дату встречи")
 def show_dates(message):
@@ -68,7 +82,6 @@ def confirm_yes(call):
         bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=None)
     except:
         pass
-   
     bot.send_message(call.message.chat.id, f"Отлично! Жду тебя в {FIXED_TIME}. До встречи!")
 
 @bot.callback_query_handler(func=lambda call: call.data == "confirm_no")
@@ -77,7 +90,6 @@ def confirm_no(call):
         bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=None)
     except:
         pass
-   
     bot.send_message(call.message.chat.id, "Жаль... Ты не увидишь что я придумал)) Если передумаешь ты знаешь кому написать))")
 
 @bot.message_handler(content_types=['text'])
